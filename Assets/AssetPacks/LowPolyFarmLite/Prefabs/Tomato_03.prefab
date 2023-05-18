@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3924147679725037070}
   - component: {fileID: 7487456116394265693}
   - component: {fileID: 5465040929928713008}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Tomato_03_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,6 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5473569773201559785}
   m_RootOrder: 0
@@ -52,6 +53,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -107,7 +109,7 @@ GameObject:
   - component: {fileID: 1919976566651885523}
   - component: {fileID: 8708512267373442074}
   - component: {fileID: 720977957349680984}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Tomato_03_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,6 +126,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5473569773201559785}
   m_RootOrder: 1
@@ -147,6 +150,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -187,7 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5473569773201559785}
   - component: {fileID: 4734468584403736855}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Tomato_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,6 +208,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3733490662227973571}
   - {fileID: 1919976566651885523}

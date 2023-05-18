@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4473977858799461980}
   - component: {fileID: 7284600420547376888}
   - component: {fileID: 8365226740536336627}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TomatoPlant_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2906742830765571359}
   - component: {fileID: 7475514592933617969}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TomatoPlant_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 7426958264036711301}
   - component: {fileID: 6807590334703403674}
   - component: {fileID: 2976623064582525220}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TomatoPlant_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

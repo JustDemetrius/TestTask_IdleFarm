@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using CameraLogic;
 using General;
 using Player;
 using UI;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 namespace GardenLogic
 {
     public class GardenController : MonoBehaviour
     {
-        private const int MaxDimentionCount = 6;
+        private const int MaxSizeValue = 6;
         
-        [Header("Garden dementions")]
-        [SerializeField] private uint _gardenWidth = 5;
-        [SerializeField] private uint _gardenHeight = 5;
-        [Space]
         [Header("All awailable plants to grow")]
         [SerializeField] private List<PlantScriptableData> _awailablePlants;
         [SerializeField] private PlantSpot _plantPrefab;
 
-        public event Action<int> OnPlantGathering;
+        [Space] [Header("NavMeshSurface ref")] [SerializeField]
+        private NavMeshSurface _navMeshSurface;
+
+        public event Action<int> OnPlantFinished;
+        public event Action<int> OnTomatoCollected;
         public List<PlantScriptableData> AwailablePlants => _awailablePlants;
 
+        private int _gardenWidth = 6;
+        private int _gardenHeight = 6;
+        
         private InputSystem _inputSystem;
         private PlantSpot _lastInteractedPlant;
         private GameHudController _hudController;
@@ -30,18 +35,15 @@ namespace GardenLogic
         private PlantScriptableData _selectedPlant;
         private bool IsAbleToPlant = true;
 
-        private void Awake()
-        {
-            // for preventing very large garden :)
-            _gardenWidth = _gardenWidth > MaxDimentionCount ? MaxDimentionCount : _gardenWidth;
-            _gardenHeight = _gardenHeight > MaxDimentionCount ? MaxDimentionCount : _gardenHeight;
-        }
-
-        public void Init(InputSystem inputSystem, GameHudController hudController, PlayerAvatarController avatar)
+        public void InitController(InputSystem inputSystem, GameHudController hudController, PlayerAvatarController avatar, Vector2 gardenSize)
         {
             _inputSystem = inputSystem;
             _hudController = hudController;
             _playerAvatarController = avatar;
+            
+            _gardenWidth = gardenSize.x > MaxSizeValue ? MaxSizeValue : (int)gardenSize.x;
+            _gardenHeight = gardenSize.y > MaxSizeValue ? MaxSizeValue : (int)gardenSize.y;
+            
             CreateGarden();
             _inputSystem.OnPlantSpotClicked += TryToInteractWithBed;
         }
@@ -67,6 +69,8 @@ namespace GardenLogic
                 newSpot.transform.localPosition = gridPoints[i];
                 gridSpots.Add(newSpot);
             }
+            
+            _navMeshSurface.BuildNavMesh(); // baking navmesh map
         }
 
         private void TryToInteractWithBed(PlantSpot spot)
@@ -82,13 +86,26 @@ namespace GardenLogic
             if (_lastInteractedPlant.AssignedPlantData == null)
                 _hudController.ShowPlantsList(SendAvatarToWork);
             else
-            {
-                OnPlantGathering?.Invoke(Mathf.FloorToInt(_lastInteractedPlant.AssignedPlantData.OverAllSecondsToGrow * 15));
-                _lastInteractedPlant.CollectFinalPlant();
-            }
+                _playerAvatarController.MoveTo(_lastInteractedPlant, RigisterPlantDestroying);
                 
         }
 
+        private void RegisterPlantComplition(PlantScriptableData finishedPlantData)
+        {
+            OnPlantFinished?.Invoke(Mathf.FloorToInt(finishedPlantData.OverAllSecondsToGrow * 15));
+            UpdateNavMeshMap();
+        }
+        private void RigisterPlantDestroying()
+        {
+            if (_lastInteractedPlant.AssignedPlantData.PlantName == "Tomato")
+                OnTomatoCollected?.Invoke(3);
+            
+            _lastInteractedPlant.CollectFinalPlant(UpdateNavMeshMap);
+        }
+        
+        private void UpdateNavMeshMap() =>
+            _navMeshSurface.UpdateNavMesh(_navMeshSurface.navMeshData); // rebaking navmesh map
+        
         private void SendAvatarToWork(PlantScriptableData chosenPlant)
         {
             IsAbleToPlant = false;
@@ -98,7 +115,7 @@ namespace GardenLogic
 
         private void PlantSelectedTarget()
         {
-            _lastInteractedPlant.PlantThis(_selectedPlant);
+            _lastInteractedPlant.PlantThis(_selectedPlant, RegisterPlantComplition);
             IsAbleToPlant = true;
         }
         private void OnDestroy()

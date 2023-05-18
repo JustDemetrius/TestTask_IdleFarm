@@ -12,11 +12,13 @@ namespace GardenLogic
         [SerializeField] private GameObject _plantObject;
         [Space]
         [SerializeField] private bool _isAbleToCollect = true;
+        [SerializeField] private uint _collectAmmount;
 
         public string PlantName => _plantName;
         public uint OverAllSecondsToGrow => _overAllSecondsToGrow;
         public GameObject PlantObject => _plantObject;
         public bool IsAbleToCollect => _isAbleToCollect;
+        public int CollectAmmount => (int)_collectAmmount;
         public float ObjectScaleMultiplier => _objectScaleMultiplier;
 
     }

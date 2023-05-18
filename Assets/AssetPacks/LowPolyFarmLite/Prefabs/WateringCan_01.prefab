@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3928642541961028766}
   - component: {fileID: 3928642541959931486}
   - component: {fileID: 6874692661040567030}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: WateringCan_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _plantName: Brushes
   _overAllSecondsToGrow: 20
-  _objectScaleMultiplier: 2
+  _objectScaleMultiplier: 2.5
   _plantObject: {fileID: 6662174415517180126, guid: 81dad7d5552c9a341b390c79338fe0a4, type: 3}
   _isAbleToCollect: 1
+  _collectAmmount: 0

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _plantName: Tomato
   _overAllSecondsToGrow: 60
-  _objectScaleMultiplier: 1.5
+  _objectScaleMultiplier: 1.8
   _plantObject: {fileID: 2906742830765859135, guid: 78da2ace1ab76ce478600ebe37fa10fe, type: 3}
   _isAbleToCollect: 1
+  _collectAmmount: 3

@@ -10,10 +10,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PlantObjects
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

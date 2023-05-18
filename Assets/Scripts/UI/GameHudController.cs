@@ -12,6 +12,8 @@ namespace UI
     {
         [Header("Stats")]
         [SerializeField] private TextMeshProUGUI _experienceAmmountTMP;
+
+        [SerializeField] private TextMeshProUGUI _tomatoAmmountTMP;
         [Space]
         [Header("Select plant popup")]
         [SerializeField] private RectTransform _popUpRect;
@@ -85,6 +87,9 @@ namespace UI
         }
         public void UpdateExperienceStats(string stats) =>
             _experienceAmmountTMP.text = stats;
+
+        public void UpdateTomatoStats(string collected) =>
+            _tomatoAmmountTMP.text = collected;
         
     }
 }

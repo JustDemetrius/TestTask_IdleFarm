@@ -1,4 +1,5 @@
 using System;
+using CameraLogic;
 using GardenLogic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -22,8 +23,8 @@ namespace Player
 
         private Action _callBack;
         private PlantSpot _target;
-        private Transform _defaultPosition;
-        private AnimationState _currentAnimationState;
+        private Transform _defaultPosTransform;
+        private CameraController _cameraController;
         private bool IsAbleToMove = true;
 
         private void Start()
@@ -36,10 +37,12 @@ namespace Player
             }
 
             State = AnimatorState.Idle;
-            _defaultPosition = transform.parent;
+            _defaultPosTransform = transform.parent;
             GetComponent<CapsuleCollider>().isTrigger = true;
         }
-
+        public void AttachCameraController(CameraController cameraController) =>
+            _cameraController = cameraController;
+        
         public void MoveTo(PlantSpot target, Action callBack = null)
         {
             if (!IsAbleToMove)
@@ -49,6 +52,7 @@ namespace Player
             _callBack = callBack;
 
             _navMeshAgent.SetDestination(_target.transform.position);
+            _cameraController.MoveCamera(_target.transform, MathF.Floor(Vector3.Distance(transform.position, target.transform.position) / 2));
         }
 
         private void OnTriggerEnter(Collider collider)
@@ -58,22 +62,32 @@ namespace Player
                 if (_target != null && plantSpot.gameObject.GetInstanceID() == _target.gameObject.GetInstanceID())
                 {
                     IsAbleToMove = false;
+                    RotateAvatar(_target.transform);
                     _avatarAnimator.SetTrigger(GatherHash);
                     _navMeshAgent.isStopped = true;
                 }
             }
         }
 
+        private void RotateAvatar(Transform currentTarget = null)
+        {
+            if (currentTarget == null) // if target not setted, then rotate to default idle rotation -90
+            {
+                var defaultRotation = Quaternion.Euler(new Vector3(0f, -90f, 0f));
+                transform.rotation = defaultRotation;
+            }
+            else
+            {
+                Vector3 direction = currentTarget.position - transform.position;
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = targetRotation;
+            }
+        }
         private void Update()
         {
             _avatarAnimator.SetFloat(MoveHash, _navMeshAgent.velocity.magnitude, 0.1f, Time.deltaTime);
-        }
-        
-        private enum AnimationState
-        {
-            Idle = 0,
-            Running = 1,
-            Interacting = 2,
+            if (_navMeshAgent.velocity.magnitude < 0.2f)
+                RotateAvatar();
         }
 
         public void EnteredState(int stateHash)
@@ -90,7 +104,8 @@ namespace Player
             {
                 _callBack?.Invoke();
                 _navMeshAgent.isStopped = false;
-                _navMeshAgent.SetDestination(_defaultPosition.position);
+                _navMeshAgent.SetDestination(_defaultPosTransform.position);
+                _cameraController.MoveCamera();
                 _target = null;
                 IsAbleToMove = true;
 
