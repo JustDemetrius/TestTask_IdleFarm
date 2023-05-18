@@ -28,6 +28,7 @@ namespace GardenLogic
         private PlayerAvatarController _playerAvatarController;
 
         private PlantScriptableData _selectedPlant;
+        private bool IsAbleToPlant = true;
 
         private void Awake()
         {
@@ -70,7 +71,7 @@ namespace GardenLogic
 
         private void TryToInteractWithBed(PlantSpot spot)
         {
-            if (_hudController.IsAnyPopUpShowing)
+            if (_hudController.IsAnyPopUpShowing || !IsAbleToPlant)
                 return;
             
             _lastInteractedPlant = spot;
@@ -90,12 +91,16 @@ namespace GardenLogic
 
         private void SendAvatarToWork(PlantScriptableData chosenPlant)
         {
+            IsAbleToPlant = false;
             _selectedPlant = chosenPlant;
             _playerAvatarController.MoveTo(_lastInteractedPlant, PlantSelectedTarget);
         }
-        private void PlantSelectedTarget() =>
+
+        private void PlantSelectedTarget()
+        {
             _lastInteractedPlant.PlantThis(_selectedPlant);
-            
+            IsAbleToPlant = true;
+        }
         private void OnDestroy()
         {
             _inputSystem.OnPlantSpotClicked -= TryToInteractWithBed;
