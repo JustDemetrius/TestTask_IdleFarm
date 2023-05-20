@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace GardenLogic
 {
-    public class PlantSpot : MonoBehaviour
+    public class PlantSpot : MonoBehaviour, IPlant
     {
         [Header("Plant UI")] 
         [SerializeField] private Image _timerBg;
@@ -31,17 +31,19 @@ namespace GardenLogic
                 _timerTMP,
                 FinishGrowing);
         }
-        public void PlantThis(PlantScriptableData toPlant, Action<PlantScriptableData> callBack = null)
+
+        public void PlantThis(PlantScriptableData plantData, Action<PlantScriptableData> onPlantGrowUp = null)
         {
             if (IsGrowing)
                 return;
 
-            _callBack = callBack;
+            _callBack = onPlantGrowUp;
             IsGrowing = true;
-            AssignedPlantData = toPlant;
+            AssignedPlantData = plantData;
 
-            _growingTimer.StartTimer((int)toPlant.OverAllSecondsToGrow);
+            _growingTimer.StartTimer((int)plantData.OverAllSecondsToGrow);
         }
+
         public void CollectFinalPlant(Action onPlantDestroyed = null)
         {
             if (IsGrowing)

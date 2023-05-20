@@ -45,7 +45,7 @@ namespace GardenLogic
             {
                 currentTime = DateTime.UtcNow;
                 TimeSpan dif = targetTime - currentTime;
-                _timerTextTMP.text = $"{dif.Hours}-{dif.Minutes}m-{dif.Seconds}s";
+                _timerTextTMP.text = $"{dif.Hours}h-{dif.Minutes}m-{dif.Seconds}s";
                 await Task.Delay(1000);
             }
             
